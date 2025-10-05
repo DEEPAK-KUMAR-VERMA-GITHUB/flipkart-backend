@@ -1,8 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
-export class AuthServiceService {
-  getHello(): string {
-    return 'Hello World!';
+export class AuthService {
+
+  constructor(private readonly jwtService: JwtService) { }
+
+  async register(dto: RegisterDto): {
+
+
   }
+
+
 }
