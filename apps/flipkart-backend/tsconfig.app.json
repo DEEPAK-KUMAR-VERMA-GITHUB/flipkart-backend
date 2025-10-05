@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "outDir": "../../dist/apps/flipkart-backend"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
+}
