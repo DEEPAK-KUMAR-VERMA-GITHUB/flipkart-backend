@@ -38,7 +38,7 @@ export class RegisterDto {
   })
   @IsOptional()
   @IsString()
-  name?: string;
+  fullName?: string;
 
   @ApiProperty({
     description: 'User primary mobile number',
