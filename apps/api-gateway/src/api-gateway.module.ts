@@ -10,9 +10,7 @@ import { ProxyMiddleware } from './proxy.middleware';
   providers: [ApiGatewayService],
 })
 export class ApiGatewayModule {
-
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(ProxyMiddleware).forRoutes("*")
+    consumer.apply(ProxyMiddleware).forRoutes('*');
   }
-
 }
