@@ -14,11 +14,71 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  CUSTOMER
+  VENDOR
+  ADMIN
+}
+
+enum AddressType {
+  HOME
+  WORK
+  OTHER
+}
+
 model User {
-  id           Int      @id @default(autoincrement())
-  email        String   @unique @db.VarChar(100)
-  passwordHash String   @db.VarChar(255)
-  fullName     String?  @db.VarChar(50)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id              Int      @id @default(autoincrement())
+  email           String   @unique @db.VarChar(100)
+  passwordHash    String   @db.VarChar(255)
+  fullName        String?  @db.VarChar(50)
+  mobileNumber    String?  @unique
+  alternateNumber String?
+  isActive        Boolean  @default(true) @map("is_active")
+  role            UserRole @default(CUSTOMER)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations for future use
+  addresses Address[]
+  orders    Order[]
+  reviews   Review[]
+
+  @@map("users")
+}
+
+model Address {
+  id        Int         @id @default(autoincrement())
+  userId    Int         @map("user_id")
+  type      AddressType
+  locality  String?
+  street    String?
+  city      String
+  state     String
+  pincode   String
+  country   String      @default("India")
+  isDefault Boolean     @default(false) @map("is_default")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("addresses")
+}
+
+// Future models for reference
+model Order {
+  id     Int    @id @default(autoincrement())
+  userId Int    @map("user_id")
+  status String
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("orders")
+}
+
+model Review {
+  id     Int @id @default(autoincrement())
+  userId Int @map("user_id")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("reviews")
 }
