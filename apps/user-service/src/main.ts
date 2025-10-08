@@ -1,15 +1,22 @@
-import { NestFactory } from '@nestjs/core';
-import { UserServiceModule } from './user-service.module';
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AppModule } from 'apps/flipkart-backend/src/app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(UserServiceModule);
+  const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-    }),
-  );
+  const config = new DocumentBuilder()
+    .setTitle('User Service')
+    .setDescription('User Profile APIs')
+    .setVersion('1.0')
+    .addTag('flipkart-backend user')
+    .addBearerAuth()
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup("/api", app, document);
 
   await app.listen(Number(process.env.USER_SERVICE_PORT) ?? 3002);
 }
