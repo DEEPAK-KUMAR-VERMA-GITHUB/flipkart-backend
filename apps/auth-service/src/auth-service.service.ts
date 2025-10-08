@@ -13,7 +13,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
     private readonly config: ConfigService,
-  ) { }
+  ) {}
 
   private async signAccessToken(user: Partial<User>) {
     const payload = {
